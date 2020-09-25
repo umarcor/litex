@@ -89,7 +89,6 @@ class BlackParrotRV64(CPU):
             o_wbm_dat_o  = idbus.dat_w,
             i_wbm_ack_i  = idbus.ack,
             i_wbm_err_i  = idbus.err,
-            i_wbm_rty_i  = 0,
             o_wbm_adr_o  = idbus.adr,
             o_wbm_stb_o  = idbus.stb,
             o_wbm_cyc_o  = idbus.cyc,
