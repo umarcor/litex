@@ -3,7 +3,7 @@
   * ExampleBlackParrotSystem.v
   *
   */
-  
+
 `include "bsg_noc_links.vh"
 
 module ExampleBlackParrotSystem
@@ -41,7 +41,7 @@ module ExampleBlackParrotSystem
    , parameter mem_file_p         = "prog.mem"
    , parameter mem_cap_in_bytes_p = 2**28
    , parameter [paddr_width_p-1:0] mem_offset_p = dram_base_addr_gp
- 
+
    // Number of elements in the fake BlackParrot memory
   /*, parameter use_max_latency_p      = 0
    , parameter use_random_latency_p   = 0
@@ -52,7 +52,7 @@ module ExampleBlackParrotSystem
    , parameter dram_clock_period_in_ps_p = `BP_SIM_CLK_PERIOD
    , parameter dram_cfg_p                = "dram_ch.ini"
    , parameter dram_sys_cfg_p            = "dram_sys.ini"
-   , parameter dram_capacity_p           = 16384 
+   , parameter dram_capacity_p           = 16384
   */
    )
   (input clk_i
@@ -66,7 +66,7 @@ module ExampleBlackParrotSystem
    , output [36:0]  wbm_adr_o //TODO parametrize this
    , output         wbm_stb_o
    , output         wbm_cyc_o
-   , output [7:0]   wbm_sel_o 
+   , output [7:0]   wbm_sel_o
    , output         wbm_we_o
    , output [2:0]   wbm_cti_o //TODO:
    , output [1:0]   wbm_bte_o
@@ -144,7 +144,7 @@ bp_softcore
    ,.mem_resp_v_i(proc_mem_resp_v_li)
    ,.mem_resp_yumi_o(proc_mem_resp_yumi_lo)
    );
- 
+
  bp2wb_convertor
    #(.bp_params_p(bp_params_p))
    bp2wb
@@ -170,7 +170,7 @@ bp_softcore
     // ,.rty_i(wbm_rty_i)
      ,.err_i(wbm_err_i)
      );
- 
+
 
 assign proc_io_cmd_ready_li = 1;//TODO: make sure this is necessary
 
@@ -182,17 +182,17 @@ if (load_nbf_p)
      nbf_loader
       (.clk_i(clk_i)
        ,.reset_i(reset_i | ~cfg_done_lo)
-    
+
        ,.lce_id_i(lce_id_width_p'('b10))
-    
+
        ,.io_cmd_o(nbf_cmd_lo)
        ,.io_cmd_v_o(nbf_cmd_v_lo)
        ,.io_cmd_yumi_i(nbf_cmd_yumi_li)
-    
+
        ,.io_resp_i(nbf_resp_li)
        ,.io_resp_v_i(nbf_resp_v_li)
        ,.io_resp_ready_o(nbf_resp_ready_lo)
-    
+
        ,.done_o(nbf_done_lo)
        );
   end
@@ -220,7 +220,7 @@ bp_cce_mmio_cfg_loader
    ,.reset_i(reset_i)
 
    ,.lce_id_i(lce_id_width_p'('b10))
-    
+
    ,.io_cmd_o(cfg_cmd_lo)
    ,.io_cmd_v_o(cfg_cmd_v_lo)
    ,.io_cmd_yumi_i(cfg_cmd_yumi_li)
@@ -230,7 +230,7 @@ bp_cce_mmio_cfg_loader
    ,.io_resp_ready_o(cfg_resp_ready_lo)
 
    ,.done_o(cfg_done_lo)
- 
+
   );
 
 // CFG and NBF are mutex, so we can just use fixed arbitration here
@@ -240,7 +240,7 @@ always_comb
       load_cmd_lo = cfg_cmd_lo;
       load_cmd_v_lo = cfg_cmd_v_lo;
 
-      nbf_cmd_yumi_li = '0; 
+      nbf_cmd_yumi_li = '0;
       cfg_cmd_yumi_li = load_cmd_yumi_li;
 
       load_resp_ready_lo = cfg_resp_ready_lo;
@@ -256,7 +256,7 @@ always_comb
       load_cmd_lo = nbf_cmd_lo;
       load_cmd_v_lo = nbf_cmd_v_lo;
 
-      nbf_cmd_yumi_li = load_cmd_yumi_li; 
+      nbf_cmd_yumi_li = load_cmd_yumi_li;
       cfg_cmd_yumi_li = '0;
 
       load_resp_ready_lo = nbf_resp_ready_lo;
@@ -386,7 +386,7 @@ always_comb
        ,.freeze_i(be_checker.scheduler.int_regfile.cfg_bus.freeze)
 
        ,.mhartid_i(be_checker.scheduler.int_regfile.cfg_bus.core_id)
-     
+
        ,.npc_w_v(npc_w_v)
        ,.npc_n(npc_n)
        ,.npc_r(npc_r)
@@ -413,19 +413,19 @@ always_comb
        ,.mhartid_i(cfg_bus_cast_i.core_id)
 
        ,.v_tl_r(v_tl_r)
-       
+
        ,.v_tv_r(v_tv_r)
        ,.addr_tv_r(paddr_tv_r)
        ,.lr_miss_tv(lr_miss_tv)
        ,.sc_op_tv_r(sc_op_tv_r)
        ,.sc_success(sc_success)
-        
+
        ,.cache_req_v_o(cache_req_v_o)
        ,.cache_req_o(cache_req_o)
 
        ,.cache_req_metadata_o(cache_req_metadata_o)
        ,.cache_req_metadata_v_o(cache_req_metadata_v_o)
-        
+
        ,.cache_req_complete_i(cache_req_complete_i)
 
        ,.v_o(v_o)
@@ -437,7 +437,7 @@ always_comb
        ,.data_mem_pkt_v_i(data_mem_pkt_v_i)
        ,.data_mem_pkt_i(data_mem_pkt_i)
        ,.data_mem_pkt_yumi_o(data_mem_pkt_yumi_o)
-       
+
        ,.tag_mem_pkt_v_i(tag_mem_pkt_v_i)
        ,.tag_mem_pkt_i(tag_mem_pkt_i)
        ,.tag_mem_pkt_yumi_o(tag_mem_pkt_yumi_o)
@@ -457,24 +457,24 @@ always_comb
      icache_tracer
       (.clk_i(clk_i & (ExampleBlackParrotSystem.icache_trace_p == 1))
        ,.reset_i(reset_i)
-       
+
        ,.freeze_i(cfg_bus_cast_i.freeze)
        ,.mhartid_i(cfg_bus_cast_i.core_id)
 
        ,.v_tl_r(v_tl_r)
-       
+
        ,.v_tv_r(v_tv_r)
        ,.addr_tv_r(addr_tv_r)
        ,.lr_miss_tv(1'b0)
        ,.sc_op_tv_r(1'b0)
        ,.sc_success(1'b0)
-        
+
        ,.cache_req_v_o(cache_req_v_o)
        ,.cache_req_o(cache_req_o)
 
        ,.cache_req_metadata_o(cache_req_metadata_o)
        ,.cache_req_metadata_v_o(cache_req_metadata_v_o)
-        
+
        ,.cache_req_complete_i(cache_req_complete_i)
 
        ,.v_o(data_v_o)
@@ -486,7 +486,7 @@ always_comb
        ,.data_mem_pkt_v_i(data_mem_pkt_v_i)
        ,.data_mem_pkt_i(data_mem_pkt_i)
        ,.data_mem_pkt_yumi_o(data_mem_pkt_yumi_o)
-       
+
        ,.tag_mem_pkt_v_i(tag_mem_pkt_v_i)
        ,.tag_mem_pkt_i(tag_mem_pkt_i)
        ,.tag_mem_pkt_yumi_o(tag_mem_pkt_yumi_o)
@@ -620,4 +620,4 @@ always_comb
    ();
 */
  endmodule
- 
+
