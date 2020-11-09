@@ -1,0 +1,29 @@
+name: 'mirror'
+
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'
+  repository_dispatch:
+    types: [ mirror ]
+
+jobs:
+
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - run: |
+        git config --local user.email "push@gha"
+        git config --local user.name "GHA"
+
+        git remote add upstream https://github.com/enjoy-digital/litex
+        git fetch --all
+
+        git checkout -b upstream-master upstream/master
+        git push origin HEAD:upstream-master
